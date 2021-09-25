@@ -1,4 +1,4 @@
 # floema-jewelry
 Stunning Single Page App with Vanilla Typescript and Express..
 
-Clone [floema.jewelry](floema.jewelry) site..
+Clone [floema.jewelry](https://floema.jewelry/) site..
