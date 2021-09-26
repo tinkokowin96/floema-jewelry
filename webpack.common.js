@@ -1,23 +1,16 @@
 const path = require("path");
-const glob = require("glob");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const PurgecssPlugin = require("purgecss-webpack-plugin");
 
+console.log("now in common config...");
 module.exports = {
-  mode: "production",
+  mode: "development",
 
   devtool: "eval",
 
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "build"),
-  },
-
-  devServer: {
-    devMiddleware: {
-      writeToDisk: true,
-    },
   },
 
   entry: path.join(__dirname, "src/index.ts"),
@@ -27,9 +20,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css",
-    }),
-    new PurgecssPlugin({
-      paths: glob.sync(`${path.join(__dirname)}/page/*`, { nodir: true }),
     }),
   ],
 
@@ -49,7 +39,13 @@ module.exports = {
 
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: require.resolve("postcss-loader"),
+          },
+        ],
       },
     ],
   },
