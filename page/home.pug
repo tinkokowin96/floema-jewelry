@@ -1,16 +1,11 @@
-block variables 
+extends ./base.pug
 
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Document
-        style 
-            include ../build/main.css
-            //- include ../style.css
-    body.bg-gray-600
-        .content#content 
-            block content 
-        h1(class="text-center text-white")="Test For Frontend @ Ti K K Wi and Success"
+block variables
+	-var template = "about"
+
+block content
+	ul(class="flex flex-row flex-wrap gap-8 p-8")
+		each image in home 
+			li(class="w-1/6")
+				img(class="object-cover object-center" src=image, alt="")
+			

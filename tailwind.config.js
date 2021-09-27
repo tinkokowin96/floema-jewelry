@@ -5,9 +5,10 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          light: "#3fbaeb",
-          DEFAULT: "#0fa9e6",
-          dark: "#0c87b8",
+          Pippin: "#FFE3E3",
+          Lola: "#E4D8DC",
+          Ghost: "#C9CCD5",
+          Nepal: "#93B5C6",
         },
       },
     },
