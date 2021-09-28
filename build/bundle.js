@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
   \**********************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\n__webpack_require__(/*! ../style.css */ \"./style.css\");\r\n\n\n//# sourceURL=webpack://floema-jewelry/./src/index.ts?");
+eval("\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\n__webpack_require__(/*! ../style.css */ \"./style.css\");\r\nvar product = document.getElementById(\"product\");\r\nvar template = document.querySelector(\".content\");\r\nproduct === null || product === void 0 ? void 0 : product.addEventListener(\"click\", function () {\r\n    fetch(\"http://localhost:3000/\")\r\n        .then(function (res) { return res.text(); })\r\n        .then(function (html) {\r\n        // // Initialize Dom\r\n        // const parser = new DOMParser();\r\n        // // parse the converted text\r\n        // const doc = parser.parseFromString(html, \"text/html\");\r\n        // console.log(doc);\r\n        document.body.innerHTML = html;\r\n    });\r\n    // history.pushState(\"\", \"\", \"/\");\r\n});\r\n\n\n//# sourceURL=webpack://floema-jewelry/./src/index.ts?");
 
 /***/ })
 

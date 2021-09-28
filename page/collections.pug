@@ -1,0 +1,11 @@
+extends ./base.pug
+
+block variables
+	-var template = "collections"
+
+block content 
+	ul(class="flex flex-row flex-wrap gap-8 p-8")
+		each collection in collections
+			each product in collection
+				li(class="w-1/6")
+					img(class="object-cover object-center" id="product"  src=product.image.url)
