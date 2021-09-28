@@ -57,7 +57,7 @@ const fetchDoc = async (req: any) => {
 	// about
 	await api.getSingle("about").then((res: any) => {
 		const data = res.data;
-		const aboutRes = {
+		const aboutRes: any = {
 			body: {},
 		};
 		const aboutResGallery: Array<string> = [];
@@ -67,10 +67,9 @@ const fetchDoc = async (req: any) => {
 			aboutResGallery.push(image.url);
 		});
 
-		//@ts-ignore
 		aboutRes.gallery = aboutResGallery;
 		data.body.forEach((section: any) => {
-			const sectionObj = {};
+			const sectionObj: any = {};
 			const sectionItems = [];
 
 			if (!isEmpty(section.items[0])) {
@@ -80,17 +79,39 @@ const fetchDoc = async (req: any) => {
 				}
 			}
 
-			//@ts-ignore
 			sectionObj.items = sectionItems;
-			//@ts-ignore
 			sectionObj.primary = section.primary;
-			//@ts-ignore
-			// apiRes.about[section.slice_type] = sectionObj;
-			//@ts-ignore
 			aboutRes.body[section.slice_type] = sectionObj;
 		});
 		apiRes.about = aboutRes;
 	});
+
+	// collection
+	await api
+		.query(Prismic.Predicates.at("document.type", "collection"))
+		.then(async ({ results }) => {
+			const collectionRes: any = {};
+			for (const product of results) {
+				const data = product.data;
+				const collectionObj: any = {};
+				// But why did switching to a for...of work while the .forEach did not?
+				// .forEach expects a synchronous function and won't do anything with the
+				// return value. It just calls the function and on to the next. for...of
+				// will actually await on the result of the execution of the function.
+				for (const productData of data.products) {
+					const product = productData.products_product;
+					await api
+						.query(Prismic.Predicates.at("document.id", product.id))
+						.then(({ results }: any) => {
+							collectionObj[product.uid] = results[0].data;
+							asset.push(results[0].data.image.url);
+							asset.push(results[0].data.model.url);
+						});
+				}
+				collectionRes[data.title] = collectionObj;
+			}
+			console.log(collectionRes);
+		});
 
 	switch (req.url) {
 		case "/":
