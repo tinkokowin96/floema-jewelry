@@ -5,6 +5,7 @@
   "main": "postcss.config.js",
   "scripts": {
     "start": "nodemon app.ts",
+    "debug": "node --inspect -r ts-node/register app.ts",
     "frontend:dev": "webpack --watch --config webpack.dev.js",
     "build": "set NODE_ENV=production && webpack --progress --config webpack.prod.js"
   },

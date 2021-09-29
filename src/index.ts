@@ -1,20 +1,38 @@
 import "../style.css";
 
-const product = document.getElementById("product");
-const template = document.querySelector(".content");
-product?.addEventListener("click", () => {
-	fetch("http://localhost:3000/")
-		.then((res: any) => res.text())
-		.then((html: any) => {
-			// // Initialize Dom
-			// const parser = new DOMParser();
+export class App {
+	loaded: boolean;
+	hostName: string;
+	constructor() {
+		this.hostName = "http://localhost:3000/";
+		this.loaded = false;
+		this.loadAssets();
+		this.route();
+	}
 
-			// // parse the converted text
-			// const doc = parser.parseFromString(html, "text/html");
+	loadAssets() {
+		if (!this.loaded) {
+			// @ts-ignore
+			const assets = window.ASSETS;
+			assets.forEach((url: string) => {
+				const image = new Image();
+				image.src = url;
+			});
+		}
+		this.loaded = true;
+	}
 
-			// console.log(doc);
-			document.body.innerHTML = html;
+	route() {
+		const product = document.getElementById("product");
+		product?.addEventListener("click", () => {
+			fetch("http://127.0.0.1:3000/")
+				.then((res: any) => res.text())
+				.then((html: any) => {
+					document.body.innerHTML = html;
+				});
+			history.pushState("", "", "/");
 		});
+	}
+}
 
-	// history.pushState("", "", "/");
-});
+new App();

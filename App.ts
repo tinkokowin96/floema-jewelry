@@ -8,9 +8,10 @@ import dotenv from "dotenv";
 import { isEmpty } from "lodash";
 
 dotenv.config();
+
 const apiEndpoint = process.env.API_ENDPOINT;
 const apiKey = process.env.API_KEY;
-const asset: Array<string> = [];
+const assets: Array<string> = [];
 let loaded: Boolean = false;
 const apiRes = {
 	home: {},
@@ -54,7 +55,7 @@ const fetchDoc = async (req: any) => {
 				const data = results[0].data;
 				const homeRes: Array<string> = [];
 				data.gallery.forEach(({ image }: any) => {
-					asset.push(image.url);
+					assets.push(image.url);
 					homeRes.push(image.url);
 				});
 				apiRes.home = homeRes;
@@ -69,7 +70,7 @@ const fetchDoc = async (req: any) => {
 			const aboutResGallery: Array<string> = [];
 
 			data.gallery.forEach(({ image }: any) => {
-				asset.push(image.url);
+				assets.push(image.url);
 				aboutResGallery.push(image.url);
 			});
 
@@ -80,7 +81,7 @@ const fetchDoc = async (req: any) => {
 
 				if (!isEmpty(section.items[0])) {
 					for (let i = 0; i < section.items.length; i++) {
-						asset.push(section.items[i].image.url);
+						assets.push(section.items[i].image.url);
 						sectionItems.push(section.items[i].image.url);
 					}
 				}
@@ -110,8 +111,8 @@ const fetchDoc = async (req: any) => {
 							.query(Prismic.Predicates.at("document.id", product.id))
 							.then(({ results }: any) => {
 								collectionObj[product.uid] = results[0].data;
-								asset.push(results[0].data.image.url);
-								asset.push(results[0].data.model.url);
+								assets.push(results[0].data.image.url);
+								assets.push(results[0].data.model.url);
 							});
 					}
 					collectionRes[data.title] = collectionObj;
@@ -158,18 +159,19 @@ app.use((req, res, next) => {
 });
 
 app.get("/", async (req, res) => {
+	// debugger;
 	const home = await fetchDoc(req);
-	res.render("home", { home });
+	res.render("home", { home, assets });
 });
 
 app.get("/about", async (req, res) => {
 	const about = await fetchDoc(req);
-	res.render("about", { about });
+	res.render("about", { about, assets });
 });
 
 app.get("/collections", async (req, res) => {
 	const collections = await fetchDoc(req);
-	res.render("collections", { collections });
+	res.render("collections", { collections, assets });
 });
 
 app.listen(3000, () => console.log("I'm listening on port 3000 ✨✨"));
